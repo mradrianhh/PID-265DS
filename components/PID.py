@@ -7,32 +7,64 @@ class PID(Controller):
     __proportional_proportionality_factor: float # P
     __integral_proportionality_factor: float # I
     __differential_proportionality_factor: float # D
-    
-    __target_value: float
-    __actual_value: float
+
+    __gravitational_constant = 9.81
+    __density = 981
+
     __error: float # target_value - actual_value
 
     __actuators: "dict[str, Actuator]"
     __sensors: "dict[str, Sensor]"
 
     class Loop(object):
-
+        __tag: str
         __actuators: "dict[str, Actuator]"
         __sensors: "dict[str, Actuator]"
+        __target_value: float
+        __actual_value: float
 
-        def __init__(self, actuators: "list[Actuator]" = [], sensors: "list[Sensor]" = []):
+        def __init__(self, tag: str, actuators: "list[Actuator]" = [], sensors: "list[Sensor]" = []):
             self.__actuators = actuators
             self.__sensors = sensors
+            self.__tag = tag
+
+        def print_information(self):
+            print(self.__tag)
+            print("Target value: %f", self.__target_value)
+            print("Actual value: %f", self.__actual_value)
+            print("Actuators:")
+            for actuator in self.__actuators:
+                print("\t%s: %s", actuator[0], type(actuator[1]))
+            print("Sensors:")
+            for sensor in self.__sensors:
+                print("\t%s: %s", sensor[0], type(sensor[1]))
+
+        def get_target_value(self) -> float:
+            return self.__target_value
+
+        def set_target_value(self, target_value: float):
+            self.__target_value = target_value
+
+        def get_actual_value(self) -> float:
+            return self.__actual_value
+
+        def set_actual_value(self, actual_value: float):
+            self.__actual_value = actual_value
 
     __loops: "dict[str, Loop]"
 
-    def __init__(self, tag: str, name = "", desc = "", proportional_proportionality_factor: float = 0.0, integral_proportionality_factor: float = 0.0, differential_proportionality_factor: float = 0.0):
+    def __init__(self, tag: str, gravitational_constant: float = 9.81, density: float = 981, name = "", desc = "", proportional_proportionality_factor: float = 0.0, integral_proportionality_factor: float = 0.0, differential_proportionality_factor: float = 0.0):
         self.__name = name
+        self.__gravitational_constant = gravitational_constant
+        self.__density = density
         self.__desc = desc
         self.__tag = tag
         self.__proportional_proportionality_factor = proportional_proportionality_factor
         self.__integral_proportionality_factor = integral_proportionality_factor
         self.__differential_proportionality_factor = differential_proportionality_factor
+
+        self.__actuators = {}
+        self.__sensors = {}
 
     
 
@@ -40,13 +72,13 @@ class PID(Controller):
         self.__error = self.__target_value - self.__actual_value
         
     def add_actuator(self, actuator: Actuator):
-        self.__actuators.append(actuator.get_tag, actuator)
+        self.__actuators[actuator.get_tag] = actuator
 
     def add_sensor(self, sensor: Sensor):
-        self.__sensors.append(sensor.get_tag, sensor)
+        self.__sensors[sensor.get_tag] = sensor
 
     def add_loop(self, tag: str, actuators: "list[str]", sensors: "list[str]"):
-        loop = self.Loop([self.__actuators[tag] for tag in actuators], [self.__sensors[tag] for tag in sensors])
+        loop = self.Loop(tag, [self.__actuators[tag] for tag in actuators], [self.__sensors[tag] for tag in sensors])
         self.__loops[tag] = loop
 
     def get_proportional_proportionality_factor(self) -> float:
@@ -66,18 +98,6 @@ class PID(Controller):
 
     def set_differential_proportionality_factor(self, differential_proportionality_factor: float):
         self.__differential_proportionality_factor = differential_proportionality_factor
-
-    def get_target_value(self) -> float:
-        return self.__target_value
-
-    def set_target_value(self, target_value: float):
-        self.__target_value = target_value
-
-    def get_actual_value(self) -> float:
-        return self.__actual_value
-
-    def set_actual_value(self, actual_value: float):
-        self.__actual_value = actual_value
 
     def get_error(self) -> float:
         return self.__error
@@ -102,3 +122,6 @@ class PID(Controller):
 
     def set_loops(self, loops: "dict[str, Loop]"):
         self.__loops = loops
+
+    def get_loop(self, tag: str) -> Loop:
+        return self.__loops[tag]

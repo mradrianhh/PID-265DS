@@ -9,3 +9,9 @@ class Container(Component):
         self.__desc = desc
         self.__tag = tag
         self.__fluid_level = fluid_level
+
+    def get_fluid_level(self) -> float:
+        return self.__fluid_level
+
+    def set_fluid_level(self, fluid_level: float):
+        self.__fluid_level = fluid_level

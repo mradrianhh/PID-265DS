@@ -17,3 +17,9 @@ class Valve(Actuator):
 
     def close(self):
         self.__state = "CLOSED"
+
+    def get_name(self) -> str:
+        return self.__name
+
+    def get_tag(self) -> str:
+        return self.__tag

@@ -8,3 +8,12 @@ class LT_265DS(Sensor):
         self.__desc = desc
         self.__tag = tag
         self.__variable = variable
+
+    def read_pressure(self, density, gravitational_constant) -> float:
+        return density * gravitational_constant * (Container)(self.__variable).get_fluid_level() 
+
+    def get_name(self) -> str:
+        return self.__name
+
+    def get_tag(self) -> str:
+        return self.__tag

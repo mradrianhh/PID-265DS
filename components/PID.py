@@ -34,10 +34,10 @@ class PID(Controller):
             print("Actual value: %f", self.__actual_value)
             print("Actuators:")
             for key in self.__actuators.keys():
-                print(f'{key} : {self.__actuators[key].get_desc()}')
+                print(f'\t{key} : {self.__actuators[key].get_desc()}')
             print("Sensors:")
             for key in self.__sensors.keys():
-                print(f'{key} : {self.__sensors[key].get_desc()}')
+                print(f'\t{key} : {self.__sensors[key].get_desc()}')
 
         def get_target_value(self) -> float:
             return self.__target_value
@@ -50,6 +50,18 @@ class PID(Controller):
 
         def set_actual_value(self, actual_value: float):
             self.__actual_value = actual_value
+
+        def get_actuators(self) -> "dict[str, Actuator]":
+            return self.__actuators
+
+        def get_actuator(self, key) -> Actuator:
+            return self.__actuators[key]
+
+        def get_sensors(self) -> "dict[str, Sensor]":
+            return self.__sensors
+
+        def get_sensor(self, key) -> Sensor:
+            return self.__sensors[key]
 
     __loops: "dict[str, Loop]"
 
@@ -134,3 +146,9 @@ class PID(Controller):
 
     def get_loop(self, tag: str) -> Loop:
         return self.__loops[tag]
+
+    def get_density(self) -> float:
+        return self.__density
+
+    def get_gravitational_constant(self) -> float:
+        return self.__gravitational_constant

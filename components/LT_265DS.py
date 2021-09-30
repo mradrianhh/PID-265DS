@@ -17,3 +17,6 @@ class LT_265DS(Sensor):
 
     def get_tag(self) -> str:
         return self.__tag
+
+    def get_desc(self) -> str:
+        return self.__desc

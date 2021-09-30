@@ -19,11 +19,11 @@ class PID(Controller):
     class Loop(object):
         __tag: str
         __actuators: "dict[str, Actuator]"
-        __sensors: "dict[str, Actuator]"
-        __target_value: float
-        __actual_value: float
+        __sensors: "dict[str, Sensor]"
+        __target_value: float = 0.0
+        __actual_value: float = 0.0
 
-        def __init__(self, tag: str, actuators: "list[Actuator]" = [], sensors: "list[Sensor]" = []):
+        def __init__(self, tag: str, actuators: "dict[str, Actuator]" = [], sensors: "dict[str, Sensor]" = []):
             self.__actuators = actuators
             self.__sensors = sensors
             self.__tag = tag
@@ -33,11 +33,11 @@ class PID(Controller):
             print("Target value: %f", self.__target_value)
             print("Actual value: %f", self.__actual_value)
             print("Actuators:")
-            for actuator in self.__actuators:
-                print("\t%s: %s", actuator[0], type(actuator[1]))
+            for key in self.__actuators.keys():
+                print(f'{key} : {self.__actuators[key].get_desc()}')
             print("Sensors:")
-            for sensor in self.__sensors:
-                print("\t%s: %s", sensor[0], type(sensor[1]))
+            for key in self.__sensors.keys():
+                print(f'{key} : {self.__sensors[key].get_desc()}')
 
         def get_target_value(self) -> float:
             return self.__target_value
@@ -65,6 +65,7 @@ class PID(Controller):
 
         self.__actuators = {}
         self.__sensors = {}
+        self.__loops = {}
 
     
 
@@ -72,13 +73,21 @@ class PID(Controller):
         self.__error = self.__target_value - self.__actual_value
         
     def add_actuator(self, actuator: Actuator):
-        self.__actuators[actuator.get_tag] = actuator
+        self.__actuators[actuator.get_tag()] = actuator
 
     def add_sensor(self, sensor: Sensor):
-        self.__sensors[sensor.get_tag] = sensor
+        self.__sensors[sensor.get_tag()] = sensor
 
     def add_loop(self, tag: str, actuators: "list[str]", sensors: "list[str]"):
-        loop = self.Loop(tag, [self.__actuators[tag] for tag in actuators], [self.__sensors[tag] for tag in sensors])
+        _actuators = {}
+        for key in actuators:
+            _actuators[key] = self.__actuators[key]
+
+        _sensors = {}
+        for key in sensors:
+            _sensors[key] = self.__sensors[key]
+
+        loop = self.Loop(tag, _actuators, _sensors)
         self.__loops[tag] = loop
 
     def get_proportional_proportionality_factor(self) -> float:

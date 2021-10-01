@@ -30,8 +30,8 @@ class PID(Controller):
 
         def print_information(self):
             print(self.__tag)
-            print("Target value: %f", self.__target_value)
-            print("Actual value: %f", self.__actual_value)
+            print(f'Target value : {self.__target_value}')
+            print(f'Actual value: {self.__actual_value}')
             print("Actuators:")
             for key in self.__actuators.keys():
                 print(f'\t{key} : {self.__actuators[key].get_desc()}')

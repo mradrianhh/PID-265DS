@@ -4,8 +4,11 @@ class Component(object):
    __type: str 
    __tag: str
 
-   def __init__(self):
-      pass
+   def __init__(self, tag: str, type: str, name: str = "", desc: str = ""):
+      self.__tag = tag
+      self.__name = name
+      self.__desc = desc
+      self.__type = type
 
    def get_name(self) -> str:
       return self.__name

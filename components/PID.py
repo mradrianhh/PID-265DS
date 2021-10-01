@@ -135,6 +135,9 @@ class PID(Controller):
     def get_sensors(self) -> "dict[str, Sensor]":
         return self.__sensors
 
+    def get_sensor(self, key) -> Sensor:
+        return self.__sensors[key]
+
     def set_sensors(self, sensors: "dict[str, Sensor]"):
         self.__sensors = sensors
 

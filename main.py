@@ -16,4 +16,4 @@ PID.add_loop("FLUID_LEVEL_T_2", ["V_01"], ["LT_01"])
 
 #PID.get_loop("FLUID_LEVEL_T_2").print_information()
 
-print((LT_265DS)(PID.get_loop("FLUID_LEVEL_T_2").get_sensor("LT_01")).read_pressure(PID.get_density(), PID.get_gravitational_constant()))
+lt = (LT_265DS)(PID.get_sensor("LT_01"))

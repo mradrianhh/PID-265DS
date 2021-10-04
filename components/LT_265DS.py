@@ -12,3 +12,6 @@ class LT_265DS(Sensor):
 
     def read_pressure(self, density, gravitational_constant) -> float:
         return density * gravitational_constant * Container(self.get_variable()).get_fluid_level()
+
+    def read_fluid_level(self) -> float:
+        return Container(self.get_variable()).get_fluid_level()

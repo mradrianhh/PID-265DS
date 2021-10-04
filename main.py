@@ -1,3 +1,4 @@
+"""
 from components import *
 
 PID = PID(tag = "PID_01", name = "PID_01", desc = "Controller for fluid level control.")
@@ -14,4 +15,9 @@ loop = PID.get_loop("FLUID_LEVEL_T_2")
 loop.add_actuator(VALVE)
 loop.add_sensor(LT)
 
-loop.print_information()
+loop.print_information()"""
+
+from simulator import Simulator
+
+sim = Simulator()
+sim.simulate()

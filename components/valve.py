@@ -4,6 +4,7 @@ from .container import Container
 class Valve(Actuator):
     __position: float # position between 0-100%. 0% being closed.
     __max_flow_rate: float # flow rate in fully-open position(100%) in L/min.
+    __max_flow_rate_si: float # flow rate in fully-open position given in SI-units, L/s.
 
     def __init__(self, variable: Container, actuator: Actuator = None, tag:str = "", name:str = "", desc:str = ""):
         if actuator != None:
@@ -34,5 +35,27 @@ class Valve(Actuator):
     """
     def get_flow_rate(self) -> float:
         return self.__position * self.__max_flow_rate
+
+    def get_flow_rate_si(self) -> float:
+        return self.__position * self.__max_flow_rate_si
+
+
+
+
+    # Getters and setters
+
+    def get_max_flow_rate(self) -> float:
+        return self.__max_flow_rate
+
+    def set_max_flow_rate(self, flow_rate: float):
+        self.__max_flow_rate = flow_rate
+        self.__max_flow_rate_si = flow_rate / 60
+
+    def get_max_flow_rate_si(self) -> float:
+        return self.__max_flow_rate_si
+
+    def set_max_flow_rate_si(self, flow_rate: float):
+        self.__max_flow_rate_si = flow_rate
+        self.__max_flow_rate = flow_rate * 60
 
 

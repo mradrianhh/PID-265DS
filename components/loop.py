@@ -1,9 +1,7 @@
 from .actuator import Actuator
 from .sensor import Sensor
-from .PID import PID
 
 class Loop(object):
-        __PID: PID
         __tag: str
         __actuators: "dict[str, Actuator]"
         __sensors: "dict[str, Sensor]"
@@ -14,11 +12,10 @@ class Loop(object):
         __integral_proportionality_factor: float
         __differential_proportionality_factor: float
 
-        def __init__(self, PID: PID, tag: str, actuators: "dict[str, Actuator]" = [], sensors: "dict[str, Sensor]" = [], proportional_proportionality_factor: float = 0.0, integral_proportionality_factor: float = 0.0, differential_proportionality_factor: float = 0.0):
+        def __init__(self, tag: str, actuators: "dict[str, Actuator]" = [], sensors: "dict[str, Sensor]" = [], proportional_proportionality_factor: float = 0.0, integral_proportionality_factor: float = 0.0, differential_proportionality_factor: float = 0.0):
             self.__actuators = actuators
             self.__sensors = sensors
             self.__tag = tag
-            self.__PID = PID
             self.__proportional_proportionality_factor = proportional_proportionality_factor
             self.__integral_proportionality_factor = integral_proportionality_factor
             self.__differential_proportionality_factor = differential_proportionality_factor

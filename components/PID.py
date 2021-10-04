@@ -5,14 +5,10 @@ from .container import Container
 from .loop import Loop
 
 class PID(Controller):
-    __gravitational_constant = 9.81
-    __density = 981
     __loops: "dict[str, Loop]" = {}
 
-    def __init__(self, tag: str, gravitational_constant: float = 9.81, density: float = 981, name = "", desc = ""):
+    def __init__(self, tag: str, name = "", desc = ""):
         super().__init__(tag, name, desc)
-        self.__gravitational_constant = gravitational_constant
-        self.__density = density
 
     """
     @param loop: select the loop to simulate by tag.
@@ -32,9 +28,3 @@ class PID(Controller):
 
     def get_loop(self, tag: str) -> Loop:
         return self.__loops[tag]
-
-    def get_density(self) -> float:
-        return self.__density
-
-    def get_gravitational_constant(self) -> float:
-        return self.__gravitational_constant

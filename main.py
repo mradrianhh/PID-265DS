@@ -18,6 +18,13 @@ loop.add_sensor(LT)
 loop.print_information()"""
 
 from simulator import Simulator
+from components import LT_265DS, Container, Valve
 
-sim = Simulator()
-sim.simulate()
+if __name__ == "__main__":
+    sim = Simulator(sample_rate=2)
+    t_2 = Container(tag = "T_2", name = "T_2", desc = "fluid tank")
+    lt = LT_265DS(t_2, "LT_01", "LT_01", "pressure sensor")
+    valve = Valve(t_2, tag = "V_01", name = "V_01", desc = "Inlet valve for fluid tank.")
+    t_2.print_information()
+    lt.print_information()
+    valve.print_information()

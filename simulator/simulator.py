@@ -3,7 +3,6 @@ import time
 class Simulator():
     __sample_rate: float
     __time_step: float # sample_rate converted for time.
-
     __simulating: bool
 
     def __init__(self, sample_rate: float = 1):

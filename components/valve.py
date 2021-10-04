@@ -1,16 +1,29 @@
 from .actuator import Actuator
 from .container import Container
+from .direction import Direction
 
 class Valve(Actuator):
+
     __position: float # position between 0-100%. 0% being closed.
     __max_flow_rate: float # flow rate in fully-open position(100%) in L/min.
     __max_flow_rate_si: float # flow rate in fully-open position given in SI-units, L/s.
+    __direction: Direction
 
-    def __init__(self, variable: Container, actuator: Actuator = None, tag:str = "", name:str = "", desc:str = ""):
+    """
+    @param variable: The container the valve is attached to.
+    @param position: Starting position of the valve. Defaults to fully closed.
+    @param direction: Specifies whether it's an inlet or an outlet valve.
+    """
+    def __init__(self, variable: Container, actuator: Actuator = None, tag:str = "", name:str = "", desc:str = "", max_flow_rate: float = 10.0, position: float = 0.0, direction: Direction = Direction.INLET):
         if actuator != None:
             super().__init__(variable = actuator.get_variable(), tag = actuator.get_tag(), type = actuator.get_type(), name = actuator.get_name(), desc = actuator.get_desc())
         else:
             super().__init__(variable = variable, tag = tag, type = "actuator", name = name, desc = desc)
+
+        self.__max_flow_rate = max_flow_rate
+        self.__max_flow_rate_si = max_flow_rate / 60
+        self.__position = position
+        self.__direction = direction
 
     """
     Set valve to failsafe position(closed).
@@ -39,8 +52,14 @@ class Valve(Actuator):
     def get_flow_rate_si(self) -> float:
         return self.__position * self.__max_flow_rate_si
 
+    # Auxiliary functions
 
-
+    def print_information(self):
+        super().print_information()
+        print(f'Direction: {self.__direction.name}')
+        print(f'Max flowrate: {self.__max_flow_rate} L/min')
+        print(f'Position: {self.__position}%')
+        print(f'Current flowrate: {self.get_flow_rate()} L/min. Running at {self.get_flow_rate() * 100 / self.__max_flow_rate}% capacity.\n')
 
     # Getters and setters
 

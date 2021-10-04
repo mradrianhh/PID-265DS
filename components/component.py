@@ -10,6 +10,13 @@ class Component(object):
       self.__desc = desc
       self.__type = type
 
+   def print_information(self):
+      print(f'Tag: {self.__tag}')
+      print(f'Name: {self.__name}')
+      print(f'Type: {self.__type}')
+      print(f'Description: {self.__desc}')
+
+
    def get_name(self) -> str:
       return self.__name
 
